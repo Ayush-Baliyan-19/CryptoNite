@@ -50,15 +50,15 @@ export default function Home() {
         setDataForTable(res.data);
       });
   }, []);
-  useEffect(() => {
-    axios
-      .get(
-      "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,solana&sparkline=false&interval=hourly&range=6"
-      )
-      .then((res) => {
-      setDataForChart(res.data);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //     "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,solana&sparkline=false&interval=hourly&range=6"
+  //     )
+  //     .then((res) => {
+  //     setDataForChart(res.data);
+  //     });
+  // }, []);
   return (
     <main className="flex gap-2">
       <div className="container leftContainer py-5 flex flex-col gap-5 w-2/3 pr-0 pl-3">
