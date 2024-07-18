@@ -51,12 +51,12 @@ const Page = ({ params }: { params: { tokenName: string } }) => {
       </div>
       <div className="rightContainer container w-1/3 flex flex-col gap-4">
         <div className="exploreTable">
-          <TableCrypto heading={"WatchList"} invoices={invoices.slice(1, 5)} />
+          <TableCrypto heading={"WatchList"} invoices={[]} />
         </div>
         <div className="exploreTable">
           <TableCrypto
             heading={"Recently Viewed"}
-            invoices={invoices.slice(1, 5)}
+            invoices={[]}
           />
         </div>
       </div>
