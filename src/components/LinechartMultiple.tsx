@@ -51,13 +51,13 @@ export const Linechart = (props:any) => {
               strokeWidth={2}
               dot={false}
             />
-            <Line
+            {/* <Line
               dataKey="Ethereum"
               type="monotone"
               stroke="var(--color-etherium)"
               strokeWidth={2}
               dot={false}
-            />
+            /> */}
           </LineChart>
         </ChartContainer>
       </CardContent>
