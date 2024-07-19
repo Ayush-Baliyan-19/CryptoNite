@@ -1,13 +1,14 @@
 import { Linechart } from "@/components/LinechartMultiple";
 import { Button } from "@/components/ui/button";
 import { PlusSquare } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import { chartData, chartConfig, invoices } from "@/lib/constant";
 import { TableCrypto } from "@/components/Table-Crypto";
 import { SliderForHighAndLow } from "@/components/HighandLow";
 import { Separator } from "@/components/ui/separator";
 const Page = ({ params }: { params: { tokenName: string } }) => {
   const { tokenName } = params;
+  const [currentPage, setCurrentPage] = useState(1);
   return (
     <main className="flex py-5">
       <div className="container flex flex-col w-2/3 gap-3">
@@ -57,10 +58,10 @@ const Page = ({ params }: { params: { tokenName: string } }) => {
       </div>
       <div className="rightContainer container w-1/3 flex flex-col gap-4">
         <div className="exploreTable">
-          <TableCrypto heading={"WatchList"} invoices={[]} />
+          <TableCrypto heading={"WatchList"} invoices={[]} {...{currentPage,setCurrentPage}} />
         </div>
         <div className="exploreTable">
-          <TableCrypto heading={"Recently Viewed"} invoices={[]} />
+          <TableCrypto heading={"Recently Viewed"} invoices={[]} {...{currentPage,setCurrentPage}}/>
         </div>
       </div>
     </main>
