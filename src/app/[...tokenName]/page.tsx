@@ -1,3 +1,4 @@
+"use client"
 import { Linechart } from "@/components/LinechartMultiple";
 import { Button } from "@/components/ui/button";
 import { PlusSquare } from "lucide-react";
