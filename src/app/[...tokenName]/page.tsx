@@ -41,12 +41,18 @@ const Page = ({ params }: { params: { tokenName: string } }) => {
           />
           {/* <Slider defaultValue={[33]} max={100} step={1} className="w-full" /> */}
         </div>
-        <Separator className="my-10"/>
+        <Separator className="my-10" />
         <div className="about">
-          <p className="text-lg font-bold">
-            About {tokenName}
+          <p className="text-lg font-bold">About {tokenName}</p>
+          <p className="">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae
+            similique nostrum, dolorem laudantium distinctio vero accusantium
+            explicabo commodi numquam voluptatum, dolore maiores consequuntur
+            minima harum. Asperiores aspernatur, non sit deserunt corrupti quos
+            possimus quisquam dolorem aperiam aliquam voluptatum commodi! Enim
+            soluta amet ratione debitis architecto ullam ad corrupti, aliquid
+            dolor.
           </p>
-          <p className="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae similique nostrum, dolorem laudantium distinctio vero accusantium explicabo commodi numquam voluptatum, dolore maiores consequuntur minima harum. Asperiores aspernatur, non sit deserunt corrupti quos possimus quisquam dolorem aperiam aliquam voluptatum commodi! Enim soluta amet ratione debitis architecto ullam ad corrupti, aliquid dolor.</p>
         </div>
       </div>
       <div className="rightContainer container w-1/3 flex flex-col gap-4">
@@ -54,10 +60,7 @@ const Page = ({ params }: { params: { tokenName: string } }) => {
           <TableCrypto heading={"WatchList"} invoices={[]} />
         </div>
         <div className="exploreTable">
-          <TableCrypto
-            heading={"Recently Viewed"}
-            invoices={[]}
-          />
+          <TableCrypto heading={"Recently Viewed"} invoices={[]} />
         </div>
       </div>
     </main>

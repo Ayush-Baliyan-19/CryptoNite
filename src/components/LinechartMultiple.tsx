@@ -1,6 +1,6 @@
 "use client";
 import { TrendingUp } from "lucide-react";
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 import {
   Card,
   CardContent,
@@ -36,31 +36,25 @@ export const Linechart = (props:any) => {
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey="hour"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
               tickFormatter={(value) => value.slice(0, 3)}
             />
+            <YAxis domain={[63000,65000]}/>
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <Line
-              dataKey="desktop"
+              dataKey="Bitcoin"
               type="monotone"
-              stroke="var(--color-desktop)"
+              stroke="var(--color-bitcoin)"
               strokeWidth={2}
               dot={false}
             />
             <Line
-              dataKey="mobile"
+              dataKey="Ethereum"
               type="monotone"
-              stroke="var(--color-mobile)"
-              strokeWidth={2}
-              dot={false}
-            />
-            <Line
-              dataKey="Tablet"
-              type="monotone"
-              stroke="var(--color-Tablet)"
+              stroke="var(--color-etherium)"
               strokeWidth={2}
               dot={false}
             />

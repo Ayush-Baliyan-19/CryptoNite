@@ -21,7 +21,14 @@ import {
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { PlusSquare,MinusSquareIcon, PlusSquareIcon } from "lucide-react";
+import { PlusSquare, MinusSquareIcon, PlusSquareIcon } from "lucide-react";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationNext,
+  PaginationPrevious,
+} from "./ui/pagination";
+import { getTableData } from "@/app/page";
 
 interface invoicesInterface {
   id: string;
@@ -46,10 +53,12 @@ interface invoicesInterface {
 interface TableCryptoProps extends PropsWithChildren {
   heading: string;
   invoices?: Array<invoicesInterface>;
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
 }
 
 export function TableCrypto(props: TableCryptoProps) {
-  const { children, heading, invoices } = props;
+  const { children, heading, invoices, currentPage, setCurrentPage } = props;
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
   const router = useRouter();
   return (
@@ -73,7 +82,7 @@ export function TableCrypto(props: TableCryptoProps) {
       </CardHeader>
       <CardContent>
         <Table>
-          <TableCaption>A list of your recent invoices.</TableCaption>
+          {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
           <TableHeader>
             <TableRow>
               <TableHead className="w-max">Token</TableHead>
@@ -97,21 +106,20 @@ export function TableCrypto(props: TableCryptoProps) {
                   {invoice.name}
                 </TableCell>
                 {/* <TableCell>{invoice.symbol.toUpperCase()}</TableCell> */}
-                <TableCell className="">$&nbsp;{invoice.current_price}
+                <TableCell className="">
+                  $&nbsp;{invoice.current_price}
                 </TableCell>
-                  {
-                    invoice.price_change_percentage_24h>0 ? (
-                      <TableCell className="text-green-400 flex w-max justify-center items-center">
-                        <PlusSquareIcon size={16} className=" self-center"/> &nbsp;
-                        {invoice.price_change_percentage_24h.toFixed(3)} %
-                      </TableCell>
-                    ) : (
-                      <TableCell className="text-red-400 flex w-max">
-                        <MinusSquareIcon size={16} className="self-center"/> &nbsp;
-                        {invoice.price_change_percentage_24h.toFixed(3)} %
-                      </TableCell>
-                    )
-                  }
+                {invoice.price_change_percentage_24h > 0 ? (
+                  <TableCell className="text-green-400 flex w-max justify-center items-center">
+                    <PlusSquareIcon size={16} className=" self-center" /> &nbsp;
+                    {invoice.price_change_percentage_24h.toFixed(3)} %
+                  </TableCell>
+                ) : (
+                  <TableCell className="text-red-400 flex w-max">
+                    <MinusSquareIcon size={16} className="self-center" /> &nbsp;
+                    {invoice.price_change_percentage_24h.toFixed(3)} %
+                  </TableCell>
+                )}
                 <TableCell className="text-left">
                   {formatter.format(invoice.market_cap).slice(0, -1) +
                     " " +
@@ -120,6 +128,24 @@ export function TableCrypto(props: TableCryptoProps) {
               </TableRow>
             ))}
           </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={4}>
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationPrevious
+                      onClick={() => setCurrentPage(currentPage - 1)}>
+                      Previous
+                    </PaginationPrevious>
+                    <PaginationNext
+                      onClick={() => setCurrentPage(currentPage + 1)}>
+                      Next
+                    </PaginationNext>
+                  </PaginationContent>
+                </Pagination>
+              </TableCell>
+            </TableRow>
+          </TableFooter>
         </Table>
       </CardContent>
     </Card>
