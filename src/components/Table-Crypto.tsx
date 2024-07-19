@@ -28,7 +28,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "./ui/pagination";
-import { getTableData } from "@/app/page";
 
 interface invoicesInterface {
   id: string;
