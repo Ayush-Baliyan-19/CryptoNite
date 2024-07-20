@@ -1,15 +1,22 @@
-"use client"
+"use client";
 import { Linechart } from "@/components/LineChartSingle";
 import { Button } from "@/components/ui/button";
-import { PlusSquare } from "lucide-react";
+import { PlusSquare, ArrowUp,ArrowDown } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { SliderForHighAndLow } from "@/components/HighandLow";
 import { Separator } from "@/components/ui/separator";
-import { filterAndGroupByHour, getHistoryData, getInfoAboutToken } from "@/lib/utils";
+import {
+  filterAndGroupByHour,
+  getHistoryData,
+  getInfoAboutToken,
+} from "@/lib/utils";
 import { TableWatchList } from "@/components/Table-WatchList";
 import { TableViewedRecently } from "@/components/Table-Recently";
 import { useAppDispatch } from "@/store/hooks";
-import { setRecentlyViewedTokens, setWatchListTokens } from "@/store/app-mgmt-slice";
+import {
+  setRecentlyViewedTokens,
+  setWatchListTokens,
+} from "@/store/app-mgmt-slice";
 
 interface tokenInfo {
   name: string;
@@ -20,6 +27,7 @@ interface tokenInfo {
   high_24h: number;
   low_24h: number;
   price_change_percentage_1y: number;
+  price_change_percentage_24h: number;
   total_supply: number;
   circulating_supply: number;
   last_updated: string;
@@ -38,6 +46,7 @@ const Page = ({ params }: { params: { tokenName: string } }) => {
     high_24h: 0,
     low_24h: 0,
     price_change_percentage_1y: 0,
+    price_change_percentage_24h: 0,
     total_supply: 0,
     circulating_supply: 0,
     last_updated: "",
@@ -58,7 +67,10 @@ const Page = ({ params }: { params: { tokenName: string } }) => {
           low_24h: res.data.market_data.low_24h.usd,
           total_supply: res.data.market_data.total_supply,
           circulating_supply: res.data.market_data.circulating_supply,
-          price_change_percentage_1y: res.data.market_data.price_change_percentage_1y,
+          price_change_percentage_1y:
+            res.data.market_data.price_change_percentage_1y,
+          price_change_percentage_24h:
+            res.data.market_data.price_change_percentage_24h,
           last_updated: res.data.last_updated,
           description: res.data.description.en,
           image: res.data.image.small,
@@ -109,19 +121,39 @@ const Page = ({ params }: { params: { tokenName: string } }) => {
       <div className="container flex flex-col w-2/3 gap-3">
         <div className="flex justify-between items-end w-full">
           <div className="value">
-            <h1 className="text-lg opacity-30 font-bold">{tokenName[0][0].toUpperCase()+tokenName[0].slice(1)}</h1>
-            <p className="text-3xl font-bold">${tokenInfo.current_price.toFixed(0)}</p>
+            <h1 className="text-lg opacity-30 font-bold">
+              {tokenName[0][0].toUpperCase() + tokenName[0].slice(1)}
+            </h1>
+            <div className="flex justify-center items-center gap-4">
+              <p className="text-3xl font-bold">
+                ${tokenInfo.current_price.toFixed(0)}
+              </p>
+              <p className={`text-base font-semibold ${tokenInfo.price_change_percentage_24h> 0 ? "text-green-500 bg-green-200" :"text-red-500 bg-red-200"} flex items-center justify-center gap-1 px-1 py-0.5 rounded-md border `}>
+                {
+                  tokenInfo.price_change_percentage_24h > 0 ? <ArrowUp size={16} /> : <ArrowDown size={16} />
+                }
+                {tokenInfo.price_change_percentage_24h.toFixed(3)}% in 24h
+              </p>
+            </div>
           </div>
           <div className="AddToList">
-            <Button variant="ghost" size="sm" onClick={()=>{
-              dispatch(setWatchListTokens(tokenName[0]));
-            }}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                dispatch(setWatchListTokens(tokenName[0]));
+              }}
+            >
               <PlusSquare />
             </Button>
           </div>
         </div>
         <div className="chart">
-          <Linechart {...{ chartConfig, chartData }} nameOfToken={tokenInfo.name} id={tokenName[0]} />
+          <Linechart
+            {...{ chartConfig, chartData }}
+            nameOfToken={tokenInfo.name}
+            id={tokenName[0]}
+          />
         </div>
         <div className="performance w-full flex flex-col gap-4">
           <h3 className="font-semibold text-2xl">Performance</h3>
@@ -142,19 +174,22 @@ const Page = ({ params }: { params: { tokenName: string } }) => {
         <Separator className="my-10" />
         <div className="about">
           <p className="text-lg font-bold">About {tokenName}</p>
-          <p className="" dangerouslySetInnerHTML={{
-            __html: tokenInfo.description,
-          }}>
+          <p
+            className=""
+            dangerouslySetInnerHTML={{
+              __html: tokenInfo.description,
+            }}
+          >
             {/* {tokenInfo.description} */}
           </p>
         </div>
       </div>
       <div className="rightContainer container w-1/3 flex flex-col gap-4">
         <div className="exploreTable">
-          <TableWatchList/>
+          <TableWatchList />
         </div>
         <div className="exploreTable">
-          <TableViewedRecently/>
+          <TableViewedRecently />
         </div>
       </div>
     </main>

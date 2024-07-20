@@ -32,16 +32,16 @@ export const Linechart = (props: LineChartProps) => {
     let minValue = Infinity;
 
     chartData.forEach((data: any) => {
-      if (data.Bitcoin > maxValue) {
-        maxValue = data.Bitcoin;
+      if (data[id] > maxValue) {
+        maxValue = data[id];
       }
-      if (data.Bitcoin < minValue) {
-        minValue = data.Bitcoin;
+      if (data[id] < minValue) {
+        minValue = data[id];
       }
     });
 
     setDomain([minValue-1000, maxValue+1000]);
-  }, [chartData]);
+  }, [chartData, id]);
 
   return (
     <Card>

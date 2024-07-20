@@ -1,11 +1,9 @@
 "use client";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -21,21 +19,13 @@ import {
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { PlusSquare, MinusSquareIcon, PlusSquareIcon } from "lucide-react";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationNext,
-  PaginationPrevious,
-} from "./ui/pagination";
-import { UnknownAction } from "@reduxjs/toolkit";
-import { alltokenDataInterface, setAllTokenData } from "@/store/data-slice";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { MinusSquareIcon, PlusSquareIcon } from "lucide-react";
+import { alltokenDataInterface } from "@/store/data-slice";
+import { useAppSelector } from "@/store/hooks";
 
 export function TableViewedRecently() {
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
   const router = useRouter();
-  const dispatch = useAppDispatch();
   const appMgmt = useAppSelector((state) => state.appMgmt);
   const tokenData = useAppSelector((state) => state.data);
   const { recentlyViewedTokens } = appMgmt;
