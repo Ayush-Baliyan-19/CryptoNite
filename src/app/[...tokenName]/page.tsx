@@ -8,6 +8,8 @@ import { Separator } from "@/components/ui/separator";
 import { filterAndGroupByHour, getHistoryData, getInfoAboutToken } from "@/lib/utils";
 import { TableWatchList } from "@/components/Table-WatchList";
 import { TableViewedRecently } from "@/components/Table-Recently";
+import { useAppDispatch } from "@/store/hooks";
+import { setRecentlyViewedTokens, setWatchListTokens } from "@/store/app-mgmt-slice";
 
 interface tokenInfo {
   name: string;
@@ -26,6 +28,7 @@ interface tokenInfo {
 }
 const Page = ({ params }: { params: { tokenName: string } }) => {
   const { tokenName } = params;
+  const dispatch = useAppDispatch();
   const [tokenInfo, setTokenInfo] = useState<tokenInfo>({
     name: "",
     symbol: "",
@@ -42,9 +45,7 @@ const Page = ({ params }: { params: { tokenName: string } }) => {
     image: "",
   });
   useEffect(() => {
-    console.log(tokenName)
     getInfoAboutToken(tokenName[0].toLowerCase()).then((res) => {
-      console.log(res.data);
       setTokenInfo((prevState) => {
         return {
           ...prevState,
@@ -74,6 +75,8 @@ const Page = ({ params }: { params: { tokenName: string } }) => {
     },
   };
   useEffect(() => {
+    dispatch(setRecentlyViewedTokens(tokenName[0].toLowerCase()));
+
     const fetchData = async () => {
       try {
         const results = await Promise.all([
@@ -100,19 +103,19 @@ const Page = ({ params }: { params: { tokenName: string } }) => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  useEffect(() => {
-    console.log(chartData);
-  }, [chartData]);
+
   return (
     <main className="flex py-5">
       <div className="container flex flex-col w-2/3 gap-3">
         <div className="flex justify-between items-end w-full">
           <div className="value">
-            <h1 className="text-lg opacity-30 font-bold">{tokenName}</h1>
-            <p className="text-3xl font-bold">$58,614.77</p>
+            <h1 className="text-lg opacity-30 font-bold">{tokenName[0][0].toUpperCase()+tokenName[0].slice(1)}</h1>
+            <p className="text-3xl font-bold">${tokenInfo.current_price.toFixed(0)}</p>
           </div>
           <div className="AddToList">
-            <Button variant="ghost" size="sm">
+            <Button variant="ghost" size="sm" onClick={()=>{
+              dispatch(setWatchListTokens(tokenName[0]));
+            }}>
               <PlusSquare />
             </Button>
           </div>

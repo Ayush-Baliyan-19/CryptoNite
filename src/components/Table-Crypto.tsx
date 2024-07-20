@@ -78,7 +78,9 @@ export function TableCrypto(props: TableCryptoProps) {
           </TableHeader>
           <TableBody>
             {data?.map((dataPoint) => (
-              <TableRow key={dataPoint.id} className="font-semibold">
+              <TableRow key={dataPoint.id} className="font-semibold cursor-pointer" onClick={(e)=>{
+                router.push(`${dataPoint.id}`);
+              }}>
                 <TableCell className="font-medium flex items-center gap-2 w-max">
                   <Image
                     src={dataPoint.image}

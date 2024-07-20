@@ -6,9 +6,9 @@ import { useEffect, useState } from "react";
 import { getHistoryData, getAllTokenData, handleTableData, filterAndGroupByHour } from "../lib/utils";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { alltokenDataInterface, setAllTokenData } from "@/store/data-slice";
-import { setCurrentPage, setExploredPages } from "@/store/app-mgmt-slice";
 import { TableWatchList } from "@/components/Table-WatchList";
 import { TableViewedRecently } from "@/components/Table-Recently";
+import { cache } from "react";
 
 export default function Home() {
   const [dataForTable, setDataForTable] = useState<alltokenDataInterface[]>([]);
@@ -35,15 +35,13 @@ export default function Home() {
       });
     }
     else{
-      console.log("Coming from Explore page and currentPage is ", currentPage);
-      console.log(tokenData.allTokenData.slice((currentPage-1)*20, currentPage*20));
       setDataForTable(tokenData.allTokenData.slice((currentPage-1)*20, currentPage*20));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const [dataChart, setdataChart] = useState<Array<any>>([]);
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData =cache( async () => {
       try {
         const results = await Promise.all([
           getHistoryData("bitcoin", "usd", 1),
@@ -56,7 +54,6 @@ export default function Home() {
           });
         });
         const bitcoinResults = filterAndGroupByHour(results[0]);
-        console.log(bitcoinResults);
         const ethereumResults = filterAndGroupByHour(results[1]);
         Object.keys(bitcoinResults).forEach((key) => {
           const val = bitcoinResults[key];
@@ -81,7 +78,7 @@ export default function Home() {
       } catch (error) {
         console.error("Error fetching data", error);
       }
-    };
+    })
     fetchData();
   }, []);
 

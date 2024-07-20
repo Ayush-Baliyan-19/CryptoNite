@@ -25,16 +25,18 @@ export const appMgmtSlice = createSlice({
       console.log("Setting Current Page to:", action.payload);
       state.currentPage = action.payload;
     },
-    setWatchListTokens(state, action: PayloadAction<(string | any[])[]>) {
+    setWatchListTokens(state, action: PayloadAction<(string)>) {
+      !state.watchListTokens.includes(action.payload) &&
       state.watchListTokens.push(action.payload);
     },
-    setRecentlyViewedTokens(state, action: PayloadAction<(string | any[])[]>) {
+    setRecentlyViewedTokens(state, action: PayloadAction<(string)>) {
+      !state.recentlyViewedTokens.includes(action.payload) &&
       state.recentlyViewedTokens.push(action.payload);
     },
   },
 });
 
-export const { setExploredPages, setCurrentPage, setWatchListTokens } =
+export const { setExploredPages, setCurrentPage, setWatchListTokens,setRecentlyViewedTokens } =
   appMgmtSlice.actions;
 
 export const getExploredPages = (state: { appMgmt: appMgmtState }) =>

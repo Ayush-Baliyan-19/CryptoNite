@@ -42,13 +42,14 @@ export function TableViewedRecently() {
   const { allTokenData } = tokenData;
   const [dataForTable, setDataForTable] = useState<alltokenDataInterface[]>([]);
   useEffect(() => {
+    setDataForTable([]);
     allTokenData.forEach((dataPoint) => {
       if (recentlyViewedTokens.includes(dataPoint.id)) {
         setDataForTable((prev) => [...prev, dataPoint]);
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [recentlyViewedTokens]);
+  }, []);
   return (
     <Card>
       <CardHeader className="flex flex-row justify-between">
