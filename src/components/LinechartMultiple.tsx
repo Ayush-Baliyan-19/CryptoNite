@@ -15,26 +15,82 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { useEffect, useState } from "react";
+import { Button } from "./ui/button";
 
-export const Linechart = (props:any) => {
-    const { chartConfig, chartData } = props;
+export const Linechart = (props: any) => {
+  const { chartConfig, chartData } = props;
+  const [domain, setDomain] = useState({
+    "Bitcoin": [0, 100],
+    "Ethereum": [0, 100],
+  });
+  useEffect(() => {
+    let maxBitcoin = -Infinity;
+    let minBitcoin = Infinity;
+    let maxEthereum = -Infinity;
+    let minEthereum = Infinity;
+
+    chartData.forEach((data: any) => {
+      if (data.Bitcoin > maxBitcoin) {
+        maxBitcoin = data.Bitcoin;
+      }
+      if (data.Bitcoin < minBitcoin) {
+        minBitcoin = data.Bitcoin;
+      }
+      if (data.Ethereum > maxEthereum) {
+        maxEthereum = data.Ethereum;
+      }
+      if (data.Ethereum < minEthereum) {
+        minEthereum = data.Ethereum;
+      }
+    });
+
+    setDomain({
+      "Bitcoin": [minBitcoin-1000, maxBitcoin+1000],
+      "Ethereum": [minEthereum-100, maxEthereum+100],
+    });
+  }, [chartData]);
+
+  const [selectedToken, setSelectedToken] = useState<string>("Bitcoin");
   return (
     <Card>
       <CardHeader>
         <CardTitle>Chart</CardTitle>
+        <CardDescription>
+          <div className="flex">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                setSelectedToken("Bitcoin");
+              }}
+            >
+              Bitcoin
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                setSelectedToken("Ethereum");
+              }}
+            >
+              Ethereum
+            </Button>
+            {/* <Button variant="ghost" size="sm">Solana</Button> */}
+          </div>
+        </CardDescription>
         {/* <CardDescription></CardDescription> */}
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
           <LineChart
-            accessibilityLayer
             data={chartData}
             margin={{
               left: 12,
               right: 12,
             }}
           >
-            <CartesianGrid vertical={false} />
+            {/* <CartesianGrid vertical={false} /> */}
             <XAxis
               dataKey="hour"
               tickLine={false}
@@ -42,10 +98,10 @@ export const Linechart = (props:any) => {
               tickMargin={8}
               tickFormatter={(value) => value.slice(0, 3)}
             />
-            <YAxis domain={[63000,65000]}/>
+            <YAxis domain={selectedToken==="Bitcoin"?domain["Bitcoin"]:domain["Ethereum"]} />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <Line
-              dataKey="Bitcoin"
+              dataKey={selectedToken}
               type="monotone"
               stroke="var(--color-bitcoin)"
               strokeWidth={2}

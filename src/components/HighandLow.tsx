@@ -21,14 +21,13 @@ export function SliderForHighAndLow({
   ...props
 }: SliderForHighAndLowProps) {
   const { parameter, low, high, valueToday } = props;
-  const [currentValue, setCurrentValue] = useState(valueToday);
   const [percentageShift, setPercentageShift] = useState(0);
   useEffect(() => {
-    if (currentValue && low && high) {
-      const shift = ( (currentValue - low) / (high - low) ) * 100;
+    if (valueToday && low && high) {
+      const shift = ( (valueToday - low) / (high - low) ) * 100;
       setPercentageShift(shift);
     }
-  }, [currentValue, high, low, props]);
+  }, [high, low, props, valueToday]);
   useEffect(() => {
     console.log(percentageShift)
     // setCurrentValue(valueToday);
@@ -58,7 +57,7 @@ export function SliderForHighAndLow({
                 </svg>
               </TooltipTrigger>
               <TooltipContent>
-                <p>{currentValue}</p>
+                <p>{valueToday}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

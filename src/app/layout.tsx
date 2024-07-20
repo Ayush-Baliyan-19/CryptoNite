@@ -5,6 +5,7 @@ import "./globals.css";
 import { siteConfig } from "@/lib/constant";
 import { Navbar } from "@/components/Navbar";
 import { cn } from "@/lib/utils";
+import { StoreProvider } from "@/store/StoreProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,11 +24,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn("min-h-screen bg-neutral-50 font-sans antialiased dark:bg-neutral-950",inter.className)}>
-        <ThemeProvider attribute="class"> 
-          <Navbar themeToggle/>
-          {children}</ThemeProvider>
-      </body>
+      <StoreProvider>
+        <body
+          className={cn(
+            "min-h-screen bg-neutral-50 font-sans antialiased dark:bg-neutral-950",
+            inter.className
+          )}
+        >
+          <ThemeProvider attribute="class">
+            <Navbar themeToggle />
+            {children}
+          </ThemeProvider>
+        </body>
+      </StoreProvider>
     </html>
   );
 }
