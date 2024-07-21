@@ -61,43 +61,43 @@ export const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export const searchDatabase = {
-  "Bitcoin":{
+export const searchDatabase = [
+  {
     image: "/tokenImages/bitcoin.webp",
     endPoint:"bitcoin",
     name:"Bitcoin"
   },
-  "Ethereum":{
+  {
     image:"/tokenImages/ethereum.webp",
     endPoint:"Ethereum",
     name:"Ethereum"
   },
-  "Litecoin":{
+  {
     image:"/tokenImages/litecoin.webp",
     endPoint:"Litecoin",
     name:"Litecoin"
   },
-  "Dogecoin":{
+  {
     image:"/tokenImages/dogecoin.webp",
     endPoint:"Dogecoin",
     name:"Dogecoin"
   },
-  "Tether":{
+  {
     image:"/tokenImages/tether.webp",
     endPoint:"tether",
     name:"Tether"
   },
-  "Polkadot":{
+  {
     image:"/tokenImages/polkadot.webp",
     endPoint:"Polkadot",
     name:"Polkadot"
   },
-  "Solana":{
+  {
     image:"/tokenImages/solana.webp",
     endPoint:"Solana",
     name:"Solana"
   },
-  "Uniswap":{
+  {
     image:"/tokenImages/uniswap.webp",
     endPoint:"Uniswap",
     name:"Uniswap"
@@ -106,7 +106,7 @@ export const searchDatabase = {
   //   image:"/tokenImages/chainlink.webp",
   //   endPoint:"Chainlink"
   // },
-  "Binance":{
+  {
     image:"/tokenImages/bnb.webp",
     endPoint:"binancecoin",
     name:"Binance"
@@ -127,6 +127,4 @@ export const searchDatabase = {
   //   image:"/tokenImages/gemini.webp",
   //   endPoint:"Gemini"
   // },
-}
-
-export type SearchDatabase = typeof searchDatabase;
+]

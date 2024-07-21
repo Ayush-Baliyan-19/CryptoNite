@@ -21,9 +21,9 @@ const SearchInput = React.forwardRef<HTMLInputElement, InputProps>(
     useEffect(() => {
       setSearchSuggestions([]);
       if (searchValue !== "") {
-        const suggestions = Object.keys(searchDatabase).filter((key: any) =>
-          key.toLowerCase().includes(searchValue.toLowerCase())
-        ).map((key: any) => searchDatabase[key]);
+        const suggestions = searchDatabase.filter((key: any) =>
+          key.name.toLowerCase().includes(searchValue.toLowerCase())
+        ).map((key: any) => key);
         setSearchSuggestions(suggestions);
         console.log(suggestions);
       } else {
@@ -51,11 +51,11 @@ const SearchInput = React.forwardRef<HTMLInputElement, InputProps>(
           />
         </div>
         {searchSuggestions.length > 0 && (
-          <div className="absolute top-full mt-3 bg-white shadow-md w-2/4 z-10 rounded-md border border-gray-300">
+          <div className="absolute top-full mt-3 bg-white shadow-md w-2/4 z-10 rounded-md border border-gray-300 dark:bg-black">
             {searchSuggestions.map((suggestion: any, index: number) => (
               <div
                 key={index}
-                className="flex items-center p-2 hover:bg-gray-100 cursor-pointer"
+                className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-950 cursor-pointer border-b border-gray-300 dark:border-gray-700"
                 onClick={() => {
                   setSearchValue("");
                   router.push(suggestion.endPoint);
@@ -70,7 +70,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, InputProps>(
                     className="rounded-full"
                   />
                 </div>
-                <div>{suggestion.name}</div>
+                <p className="font-semibold dark:text-white">{suggestion.name}</p>
               </div>
             ))}
           </div>
