@@ -141,7 +141,14 @@ export function TableCrypto(props: TableCryptoProps) {
               </TableRow>
             ) : (
               data?.map((dataPoint) => (
-                <TableRow key={dataPoint.id} className="font-semibold">
+                <TableRowForDrag
+                key={dataPoint.id}
+                className="font-semibold cursor-pointer"
+                id={`crypto-${dataPoint.id}`}
+                router={router}
+                image={dataPoint.image}
+                dispatch={dispatch}
+              >
                   <TableCell className="font-medium flex items-center gap-2 w-max">
                     <Image
                       src={dataPoint.image}
@@ -174,7 +181,7 @@ export function TableCrypto(props: TableCryptoProps) {
                       " " +
                       formatter.format(dataPoint.market_cap).slice(-1)}
                   </TableCell>
-                </TableRow>
+                </TableRowForDrag>
               ))
             )}
           </TableBody>
