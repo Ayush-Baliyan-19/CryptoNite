@@ -41,8 +41,8 @@ interface TableCryptoProps extends PropsWithChildren {
 }
 
 export function TableCrypto(props: TableCryptoProps) {
-  const {toast} = useToast()
-  const { data, setDataForTable,selectedTable,setSelectedTable } = props;
+  const { toast } = useToast();
+  const { data, setDataForTable, selectedTable, setSelectedTable } = props;
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -53,41 +53,69 @@ export function TableCrypto(props: TableCryptoProps) {
     <Card>
       <CardHeader className=" flex flex-col gap-4">
         <div className="flex flex-row justify-between">
-        <div className="flex flex-col gap-2">
-          <CardTitle>Trending Market</CardTitle>
-          <CardDescription>July 2024</CardDescription>
-        </div>
-        <div>
-          <Button
-            variant={"link"}
-            onClick={() => {
-              router.push("/Explore");
-            }}
-            className="text-blue-500"
-          >
-            View More Coins
-          </Button>
-        </div>
+          <div className="flex flex-col gap-2">
+            <CardTitle>Trending Market</CardTitle>
+            <CardDescription>July 2024</CardDescription>
+          </div>
+          <div>
+            <Button
+              variant={"link"}
+              onClick={() => {
+                router.push("/Explore");
+              }}
+              className="text-blue-500"
+            >
+              View More Coins
+            </Button>
+          </div>
         </div>
         <div className="flex gap-5 justify-center items-center">
-          <Button variant={selectedTable==="All Tokens" ? "outline" :"ghost"} className={`px-2 py-1 rounded-xl h-auto ${selectedTable==="All Tokens" && " outline outline-green-400 text-green-400"}`} onClick={(e)=>{
-            setSelectedTable && setSelectedTable("All Tokens");
-          }}>
+          <Button
+            variant={selectedTable === "All Tokens" ? "outline" : "ghost"}
+            className={`px-2 py-1 rounded-xl h-auto ${
+              selectedTable === "All Tokens" &&
+              " outline outline-green-400 text-green-400"
+            }`}
+            onClick={(e) => {
+              setSelectedTable && setSelectedTable("All Tokens");
+            }}
+          >
             All Coins
           </Button>
-          <Button variant={selectedTable==="Watchlist"?"outline":"ghost"} className={`px-2 py-1 rounded-xl h-auto ${selectedTable==="Watchlist" && "outline outline-green-400 text-green-400"}`} onClick={(e)=>{
-            setSelectedTable && setSelectedTable("Watchlist");
-          }}>
+          <Button
+            variant={selectedTable === "Watchlist" ? "outline" : "ghost"}
+            className={`px-2 py-1 rounded-xl h-auto ${
+              selectedTable === "Watchlist" &&
+              "outline outline-green-400 text-green-400"
+            }`}
+            onClick={(e) => {
+              setSelectedTable && setSelectedTable("Watchlist");
+            }}
+          >
             Watchlist
           </Button>
-          <Button variant={selectedTable==="Top Gainers"?"outline":"ghost"} className={`px-2 py-1 rounded-xl h-auto ${selectedTable==="Top Gainers" && "outline outline-green-400 text-green-400"}`} onClick={(e)=>{
-            setSelectedTable && setSelectedTable("Top Gainers");
-          }}>
+          <Button
+            variant={selectedTable === "Top Gainers" ? "outline" : "ghost"}
+            className={`px-2 py-1 rounded-xl h-auto ${
+              selectedTable === "Top Gainers" &&
+              "outline outline-green-400 text-green-400"
+            }`}
+            onClick={(e) => {
+              setSelectedTable && setSelectedTable("Top Gainers");
+            }}
+          >
             Top Gainers
           </Button>
-          <Button variant={selectedTable==="Top Losers"?"outline":"ghost"} className={`px-2 py-1 rounded-xl h-auto ${selectedTable==="Top Losers" && "outline outline-green-400 text-green-400"}`} onClick={(e)=>{
-            setSelectedTable && setSelectedTable("Top Losers");
-          }}>
+          <Button
+            variant={selectedTable === "Top Losers" ? "outline" : "ghost"}
+            className={`px-2 py-1 rounded-xl h-auto ${
+              selectedTable === "Top Losers" &&
+              "outline outline-green-400 text-green-400"
+            }`}
+            onClick={(e) => {
+              setSelectedTable && setSelectedTable("Top Losers");
+            }}
+          >
             Top Losers
           </Button>
         </div>
@@ -105,47 +133,50 @@ export function TableCrypto(props: TableCryptoProps) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data?.map((dataPoint) => (
-              <TableRowForDrag
-                key={dataPoint.id}
-                className="font-semibold cursor-pointer"
-                id={`crypto-${dataPoint.id}`}
-                router={router}
-                image={dataPoint.image}
-                dispatch={dispatch}
-              >
-                <TableCell className="font-medium flex items-center gap-2 w-max">
-                  <Image
-                    src={dataPoint.image}
-                    alt="Image for token"
-                    width={100}
-                    height={100}
-                    className="w-5 aspect-square"
-                  />{" "}
-                  {dataPoint.name}
+            {data.length === 0 ? (
+              <TableRow>
+                <TableCell className="text-center" colSpan={4}>
+                  No tokens { selectedTable==="Watchlist" && "in watchlist"}
                 </TableCell>
-                {/* <TableCell>{dataPoint.symbol.toUpperCase()}</TableCell> */}
-                <TableCell className="">
-                  $&nbsp;{dataPoint.current_price}
-                </TableCell>
-                {dataPoint.price_change_percentage_24h > 0 ? (
-                  <TableCell className="text-green-400 flex w-max justify-center items-center">
-                    <PlusSquareIcon size={16} className=" self-center" /> &nbsp;
-                    {dataPoint.price_change_percentage_24h.toFixed(3)} %
+              </TableRow>
+            ) : (
+              data?.map((dataPoint) => (
+                <TableRow key={dataPoint.id} className="font-semibold">
+                  <TableCell className="font-medium flex items-center gap-2 w-max">
+                    <Image
+                      src={dataPoint.image}
+                      alt="Image for token"
+                      width={100}
+                      height={100}
+                      className="w-5 aspect-square"
+                    />{" "}
+                    {dataPoint.name}
                   </TableCell>
-                ) : (
-                  <TableCell className="text-red-400 flex w-max">
-                    <MinusSquareIcon size={16} className="self-center" /> &nbsp;
-                    {dataPoint.price_change_percentage_24h.toFixed(3)} %
+                  {/* <TableCell>{dataPoint.symbol.toUpperCase()}</TableCell> */}
+                  <TableCell className="">
+                    $&nbsp;{dataPoint.current_price}
                   </TableCell>
-                )}
-                <TableCell className="text-left">
-                  {formatter.format(dataPoint.market_cap).slice(0, -1) +
-                    " " +
-                    formatter.format(dataPoint.market_cap).slice(-1)}
-                </TableCell>
-              </TableRowForDrag>
-            ))}
+                  {dataPoint.price_change_percentage_24h > 0 ? (
+                    <TableCell className="text-green-400 flex w-max justify-center items-center">
+                      <PlusSquareIcon size={16} className=" self-center" />{" "}
+                      &nbsp;
+                      {dataPoint.price_change_percentage_24h.toFixed(3)} %
+                    </TableCell>
+                  ) : (
+                    <TableCell className="text-red-400 flex w-max">
+                      <MinusSquareIcon size={16} className="self-center" />{" "}
+                      &nbsp;
+                      {dataPoint.price_change_percentage_24h.toFixed(3)} %
+                    </TableCell>
+                  )}
+                  <TableCell className="text-left">
+                    {formatter.format(dataPoint.market_cap).slice(0, -1) +
+                      " " +
+                      formatter.format(dataPoint.market_cap).slice(-1)}
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
           <TableFooter>
             <TableRow>
