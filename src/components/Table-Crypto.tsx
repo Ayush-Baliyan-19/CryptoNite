@@ -69,7 +69,7 @@ export function TableCrypto(props: TableCryptoProps) {
             </Button>
           </div>
         </div>
-        <div className="flex gap-5 justify-center items-center">
+        <div className="flex gap-5 justify-center items-center flex-wrap">
           <Button
             variant={selectedTable === "All Tokens" ? "outline" : "ghost"}
             className={`px-2 py-1 rounded-xl h-auto ${
