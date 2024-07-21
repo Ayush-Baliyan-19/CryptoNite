@@ -1,5 +1,5 @@
 "use client";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -30,7 +30,7 @@ import {
 import { alltokenDataInterface, setAllTokenData } from "@/store/data-slice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { handleTableData } from "@/lib/utils";
-import { setExploredPages } from "@/store/app-mgmt-slice";
+import { setExploredPages, setWatchListTokens } from "@/store/app-mgmt-slice";
 
 interface TableCryptoProps extends PropsWithChildren {
   data: Array<alltokenDataInterface>;
@@ -44,7 +44,7 @@ export function TableCrypto(props: TableCryptoProps) {
   const dispatch = useAppDispatch();
   const appMgmt = useAppSelector((state) => state.appMgmt);
   const tokenData = useAppSelector((state) => state.data);
-  const {currentPage} = appMgmt;
+  const { currentPage } = appMgmt;
   return (
     <Card>
       <CardHeader className="flex flex-row justify-between">
@@ -78,9 +78,14 @@ export function TableCrypto(props: TableCryptoProps) {
           </TableHeader>
           <TableBody>
             {data?.map((dataPoint) => (
-              <TableRow key={dataPoint.id} className="font-semibold cursor-pointer" onClick={(e)=>{
-                router.push(`${dataPoint.id}`);
-              }}>
+              <TableRowForDrag
+                key={dataPoint.id}
+                className="font-semibold cursor-pointer"
+                id={`crypto-${dataPoint.id}`}
+                router={router}
+                image={dataPoint.image}
+                dispatch={dispatch}
+              >
                 <TableCell className="font-medium flex items-center gap-2 w-max">
                   <Image
                     src={dataPoint.image}
@@ -111,7 +116,7 @@ export function TableCrypto(props: TableCryptoProps) {
                     " " +
                     formatter.format(dataPoint.market_cap).slice(-1)}
                 </TableCell>
-              </TableRow>
+              </TableRowForDrag>
             ))}
           </TableBody>
           <TableFooter>
@@ -122,30 +127,30 @@ export function TableCrypto(props: TableCryptoProps) {
                     <PaginationPrevious
                       className={`${currentPage === 1 ? "hidden" : ""}`}
                       onClick={() => {
-                          handleTableData(
-                            appMgmt,
-                            setDataForTable,
-                            tokenData.allTokenData,
-                            dispatch,
-                            setAllTokenData,
-                            setExploredPages,
-                            currentPage - 1,
-                          );
+                        handleTableData(
+                          appMgmt,
+                          setDataForTable,
+                          tokenData.allTokenData,
+                          dispatch,
+                          setAllTokenData,
+                          setExploredPages,
+                          currentPage - 1
+                        );
                       }}
                     >
                       Previous
                     </PaginationPrevious>
                     <PaginationNext
                       onClick={() => {
-                          handleTableData(
-                            appMgmt,
-                            setDataForTable,
-                            tokenData.allTokenData,
-                            dispatch,
-                            setAllTokenData,
-                            setExploredPages,
-                            currentPage + 1,
-                          );
+                        handleTableData(
+                          appMgmt,
+                          setDataForTable,
+                          tokenData.allTokenData,
+                          dispatch,
+                          setAllTokenData,
+                          setExploredPages,
+                          currentPage + 1
+                        );
                       }}
                     >
                       Next
@@ -160,3 +165,110 @@ export function TableCrypto(props: TableCryptoProps) {
     </Card>
   );
 }
+
+interface TableRowForDragProps extends React.PropsWithChildren {
+  id: string;
+  className?: string;
+  onClick?: () => void;
+  router: any;
+  image: string;
+  dispatch?: any;
+}
+
+const TableRowForDrag: React.FC<TableRowForDragProps> = ({
+  children,
+  className,
+  id,
+  router,
+  image,
+  dispatch,
+}) => {
+  useEffect(() => {
+    const draggableItem = document.getElementById(id);
+    let imageForDraggableItem: HTMLImageElement | null = null;
+
+    const handleDragStart = (e: DragEvent) => {
+      imageForDraggableItem = document.createElement("img");
+      imageForDraggableItem.src = image;
+      imageForDraggableItem.id = "imageForDraggableItem";
+      document.body.appendChild(imageForDraggableItem);
+      imageForDraggableItem.classList.add(
+        "absolute",
+        "z-50",
+        "bg-white",
+        "shadow-md",
+        "border",
+        "border-gray-300",
+        "rounded-md",
+        "p-2"
+      );
+      imageForDraggableItem.style.width = "30px";
+      imageForDraggableItem.style.height = "30px";
+      imageForDraggableItem.style.left = `${e.clientX}px`;
+      imageForDraggableItem.style.top = `${e.clientY}px`;
+      imageForDraggableItem.style.position = "absolute";
+      imageForDraggableItem.style.zIndex = "50";
+      console.log("Start", imageForDraggableItem.getBoundingClientRect());
+      const Empty = document.createElement("img");
+      Empty.src = "";
+      Empty.width = 0;
+      Empty.height = 0;
+      if (e.dataTransfer) {
+        e.dataTransfer.setDragImage(Empty, 15, 15);
+        e.dataTransfer.setData("text/plain", id);
+      }
+    };
+
+    const handleDrag = (e: DragEvent) => {
+      if (imageForDraggableItem) {
+        imageForDraggableItem.style.left = `${e.clientX}px`;
+        imageForDraggableItem.style.top = `${e.clientY}px`;
+        console.log(imageForDraggableItem.getBoundingClientRect());
+        const tableForWatchList = document.getElementById("tableForWatchList");
+        if (tableForWatchList && imageForDraggableItem) {
+          // imageForDraggableItem.style.left= e.clientX + "px";
+          // imageForDraggableItem.style.top= e.clientY + "px";
+          const tableRect = tableForWatchList.getBoundingClientRect();
+          const imageForDraggableItemRect =
+            imageForDraggableItem.getBoundingClientRect();
+          console.log(tableRect, imageForDraggableItemRect);
+          if (
+            imageForDraggableItemRect.left >= tableRect.left &&
+            imageForDraggableItemRect.right <= tableRect.right &&
+            imageForDraggableItemRect.top >= tableRect.top &&
+            imageForDraggableItemRect.bottom <= tableRect.bottom
+          ) {
+            console.log("Added to watchlist", id);
+            dispatch(setWatchListTokens(id.split("-")[1]));
+            imageForDraggableItem?.remove();
+            return;
+          }
+        }
+      }
+    };
+
+    if (draggableItem) {
+      draggableItem.addEventListener("dragstart", handleDragStart);
+      draggableItem.addEventListener("drag", handleDrag);
+    }
+
+    return () => {
+      if (draggableItem) {
+        draggableItem.removeEventListener("dragstart", handleDragStart);
+        draggableItem.removeEventListener("drag", handleDrag);
+      }
+      imageForDraggableItem?.remove(); // Clean up the image if the component is unmounted
+    };
+  }, [id, image, dispatch]);
+
+  return (
+    <TableRow
+      className={className}
+      id={id}
+      draggable
+      onClick={() => router.push(`${id.split("-")[1]}`)}
+    >
+      {children}
+    </TableRow>
+  );
+};

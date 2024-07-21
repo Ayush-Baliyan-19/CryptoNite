@@ -62,7 +62,7 @@ export function TableWatchList() {
         </div>
       </CardHeader>
       <CardContent>
-        <Table>
+        <Table id="tableForWatchList">
           {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
           <TableHeader>
             <TableRow>

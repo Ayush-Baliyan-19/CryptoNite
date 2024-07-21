@@ -57,7 +57,7 @@ export function SliderForHighAndLow({
                 </svg>
               </TooltipTrigger>
               <TooltipContent>
-                <p>{valueToday}</p>
+                <p>Current Value: <br />{valueToday}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

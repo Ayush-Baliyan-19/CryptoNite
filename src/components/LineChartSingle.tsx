@@ -46,7 +46,7 @@ export const Linechart = (props: LineChartProps) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Chart</CardTitle>
+        {/* <CardTitle>Chart</CardTitle> */}
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>

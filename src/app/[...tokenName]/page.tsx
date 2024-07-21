@@ -17,6 +17,8 @@ import {
   setRecentlyViewedTokens,
   setWatchListTokens,
 } from "@/store/app-mgmt-slice";
+import "./page.css";
+import Image from "next/image";
 
 interface tokenInfo {
   name: string;
@@ -119,6 +121,7 @@ const Page = ({ params }: { params: { tokenName: string } }) => {
   return (
     <main className="flex py-5">
       <div className="container flex flex-col w-2/3 gap-3">
+          <Image src={tokenInfo.image} alt={tokenName[0]} width={30} height={30} />
         <div className="flex justify-between items-end w-full">
           <div className="value">
             <h1 className="text-lg opacity-30 font-bold">
@@ -126,7 +129,7 @@ const Page = ({ params }: { params: { tokenName: string } }) => {
             </h1>
             <div className="flex justify-center items-center gap-4">
               <p className="text-3xl font-bold">
-                ${tokenInfo.current_price.toFixed(0)}
+                ${tokenInfo.current_price.toFixed(2)}
               </p>
               <p className={`text-base font-semibold ${tokenInfo.price_change_percentage_24h> 0 ? "text-green-500 bg-green-200" :"text-red-500 bg-red-200"} flex items-center justify-center gap-1 px-1 py-0.5 rounded-md border `}>
                 {
@@ -163,24 +166,23 @@ const Page = ({ params }: { params: { tokenName: string } }) => {
             high={tokenInfo.high_24h}
             valueToday={tokenInfo.current_price}
           />
-          <SliderForHighAndLow
+          {/* <SliderForHighAndLow
             parameter="52W"
             low={10.81}
             high={48}
             valueToday={17.3}
-          />
+          /> */}
           {/* <Slider defaultValue={[33]} max={100} step={1} className="w-full" /> */}
         </div>
         <Separator className="my-10" />
         <div className="about">
           <p className="text-lg font-bold">About {tokenName}</p>
           <p
-            className=""
+            className="tokenDescription underline-offset-2"
             dangerouslySetInnerHTML={{
               __html: tokenInfo.description,
             }}
           >
-            {/* {tokenInfo.description} */}
           </p>
         </div>
       </div>
