@@ -13,9 +13,9 @@ export const Navbar = ({themeToggle = false, children}: THeaderProps) => {
       <div className="w-full max-w-7xl mx-auto px-4">
         <div className="flex justify-between h-14 items-center">
           <Link href="/" className="flex items-center" prefetch={false}>
-            <BitcoinIcon className="h-6 w-6" />
+            {/* <BitcoinIcon className="h-6 w-6" /> */}
             {/* <MountainIcon className="h-6 w-6" /> */}
-            <span className="sr-only">Acme Inc</span>
+            <span className=" font-semibold text-2xl">CryptoNite</span>
           </Link>
           <SearchInput className="w-2/4"/>
           <div className="flex items-center gap-4">
