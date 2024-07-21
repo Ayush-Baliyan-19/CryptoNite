@@ -21,6 +21,9 @@ import Image from "next/image";
 
 export const Linechart = (props: any) => {
   const { chartConfig, chartData } = props;
+  useEffect(() => {
+    console.log(chartData);
+  }, [chartData]);
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
   const [domain, setDomain] = useState({
     "Bitcoin": [0, 100],

@@ -3,7 +3,12 @@ import { Linechart } from "@/components/LinechartMultiple";
 import { TableCrypto } from "@/components/Table-Crypto";
 import { ChartConfig } from "@/components/ui/chart";
 import { use, useEffect, useState } from "react";
-import { getHistoryData, getAllTokenData, handleTableData, filterAndGroupByHour } from "../lib/utils";
+import {
+  getHistoryData,
+  getAllTokenData,
+  handleTableData,
+  filterAndGroupByHour,
+} from "../lib/utils";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { alltokenDataInterface, setAllTokenData } from "@/store/data-slice";
 import { TableWatchList } from "@/components/Table-WatchList";
@@ -31,26 +36,37 @@ export default function Home() {
   } satisfies ChartConfig;
   const [selectedTable, setSelectedTable] = useState("All Tokens");
   useEffect(() => {
-    if (currentPage === 1 && dataForTable.length === 0 && tokenData.allTokenData.length === 0) {
-      getAllTokenData("usd", "market_cap_desc", 20, currentPage,toast).then((res) => {
-        dispatch(setAllTokenData(res));
-        setDataForTable(res);
-      }).catch((error) => {
-        toast({title: "Error fetching data", description: "Please try again later",variant:"destructive"});
-      })
-    }
-    else{
-      setDataForTable(tokenData.allTokenData.slice((currentPage-1)*20, currentPage*20));
+    if (
+      currentPage === 1 &&
+      dataForTable.length === 0 &&
+      tokenData.allTokenData.length === 0
+    ) {
+      getAllTokenData("usd", "market_cap_desc", 20, currentPage, toast)
+        .then((res) => {
+          dispatch(setAllTokenData(res));
+          setDataForTable(res);
+        })
+        .catch((error) => {
+          toast({
+            title: "Error fetching data",
+            description: "Please try again later",
+            variant: "destructive",
+          });
+        });
+    } else {
+      setDataForTable(
+        tokenData.allTokenData.slice((currentPage - 1) * 20, currentPage * 20)
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const [dataChart, setdataChart] = useState<Array<any>>([]);
   useEffect(() => {
-    const fetchData =cache( async () => {
+    const fetchData = cache(async () => {
       try {
         const results = await Promise.all([
-          getHistoryData("bitcoin", "usd", 1,"market_caps",toast),
-          getHistoryData("ethereum", "usd", 1,"market_caps",toast),
+          getHistoryData("bitcoin", "usd", 1, "market_caps", toast),
+          getHistoryData("ethereum", "usd", 1, "market_caps", toast),
         ]);
         results.forEach((result, index) => {
           result.forEach((data: Array<number | Date>) => {
@@ -59,55 +75,71 @@ export default function Home() {
         });
         const bitcoinResults = filterAndGroupByHour(results[0]);
         const ethereumResults = filterAndGroupByHour(results[1]);
+        // Assuming bitcoinResults and ethereumResults have the same keys
+        const mergedData:any = [];
+
+        // Merge Bitcoin data into an initial structure
         Object.keys(bitcoinResults).forEach((key) => {
           const val = bitcoinResults[key];
           const data = {
             hour: key,
             Bitcoin: val[0][1],
+            Ethereum: null, // Initialize Ethereum value as null
           };
-          setdataChart((prev) => [...prev, data]);
-          // dataChart.push(data);
+          mergedData.push(data);
         });
+
+        // Update with Ethereum data
         Object.keys(ethereumResults).forEach((key) => {
           const val = ethereumResults[key];
-          setdataChart((prev) => {
-            let prevResult = prev;
-            prevResult[parseInt(key)] = {
-              ...prevResult[parseInt(key)],
-              Ethereum: val[0][1],
-            };
-            return prevResult;
-          });
+          // Find the corresponding entry in the mergedData array
+          const entry = mergedData.find((data:any) => data.hour === key);
+          if (entry) {
+            entry.Ethereum = val[0][1];
+          }
         });
+
+        // Set the merged data to the state
+        setdataChart(mergedData);
       } catch (error) {
-        toast({title: "Error fetching data", description: "Please try again later",variant:"destructive"});
+        toast({
+          title: "Error fetching data",
+          description: "Please try again later",
+          variant: "destructive",
+        });
       }
-    })
+    });
     fetchData();
   }, []);
   useEffect(() => {
     if (selectedTable === "All Tokens") {
-      setDataForTable(tokenData.allTokenData.slice((currentPage-1)*20, currentPage*20));
-    } else if(selectedTable === "Watchlist"){
+      setDataForTable(
+        tokenData.allTokenData.slice((currentPage - 1) * 20, currentPage * 20)
+      );
+    } else if (selectedTable === "Watchlist") {
       setDataForTable([]);
       tokenData.allTokenData.forEach((dataPoint) => {
         if (appMgmt.watchListTokens.includes(dataPoint.id)) {
           setDataForTable((prev) => [...prev, dataPoint]);
         }
       });
-    } else if(selectedTable === "Top Gainers"){
+    } else if (selectedTable === "Top Gainers") {
       setDataForTable([]);
-      const topGainers = [...tokenData.allTokenData].sort((a,b) => b.price_change_percentage_24h - a.price_change_percentage_24h);
+      const topGainers = [...tokenData.allTokenData].sort(
+        (a, b) => b.price_change_percentage_24h - a.price_change_percentage_24h
+      );
       console.log(topGainers);
       setDataForTable(topGainers);
-    } else if(selectedTable === "Top Losers"){
+    } else if (selectedTable === "Top Losers") {
       setDataForTable([]);
-      const topLosers = [...tokenData.allTokenData].sort((a,b) => a.price_change_percentage_24h - b.price_change_percentage_24h);
+      const topLosers = [...tokenData.allTokenData].sort(
+        (a, b) => a.price_change_percentage_24h - b.price_change_percentage_24h
+      );
       console.log(topLosers);
       setDataForTable(topLosers);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[selectedTable]);
+  }, [selectedTable]);
   return (
     <main className="flex gap-2">
       <div className="container leftContainer py-5 flex flex-col gap-5">
@@ -129,7 +161,7 @@ export default function Home() {
       </div>
       <div className="container rightContainer py-5 flex flex-col gap-5 w-1/3 pl-0 pr-3">
         <div className="exploreTable">
-          <TableWatchList className="lg:w-full"/>
+          <TableWatchList className="lg:w-full" />
         </div>
         <div className="exploreTable">
           <TableViewedRecently />
