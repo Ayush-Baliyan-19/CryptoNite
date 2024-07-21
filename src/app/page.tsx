@@ -44,9 +44,8 @@ export default function Home() {
     const fetchData =cache( async () => {
       try {
         const results = await Promise.all([
-          getHistoryData("bitcoin", "usd", 1),
-          getHistoryData("ethereum", "usd", 1),
-          getHistoryData("dogecoin", "usd", 1),
+          getHistoryData("bitcoin", "usd", 1,"market_caps"),
+          getHistoryData("ethereum", "usd", 1,"market_caps"),
         ]);
         results.forEach((result, index) => {
           result.forEach((data: Array<number | Date>) => {

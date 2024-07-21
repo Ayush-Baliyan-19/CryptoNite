@@ -94,7 +94,7 @@ const Page = ({ params }: { params: { tokenName: string } }) => {
     const fetchData = async () => {
       try {
         const results = await Promise.all([
-          getHistoryData(tokenName[0].toLowerCase(), "usd", 1),
+          getHistoryData(tokenName[0].toLowerCase(), "usd", 1, "prices"),
         ]);
         results.forEach((result, index) => {
           result.forEach((data: Array<number | Date>) => {

@@ -37,135 +37,6 @@ export const siteConfig = {
   ],
 };
 
-export const invoices = [
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-];
-
 export const chartData = [
   { month: "January", desktop: 186, mobile: 80, Tablet: 100 },
   { month: "February", desktop: 305, mobile: 200, Tablet: 150 },
@@ -189,3 +60,73 @@ export const chartConfig = {
     color: "#93c5fd",
   },
 } satisfies ChartConfig;
+
+export const searchDatabase = {
+  "Bitcoin":{
+    image: "/tokenImages/bitcoin.webp",
+    endPoint:"bitcoin",
+    name:"Bitcoin"
+  },
+  "Ethereum":{
+    image:"/tokenImages/ethereum.webp",
+    endPoint:"Ethereum",
+    name:"Ethereum"
+  },
+  "Litecoin":{
+    image:"/tokenImages/litecoin.webp",
+    endPoint:"Litecoin",
+    name:"Litecoin"
+  },
+  "Dogecoin":{
+    image:"/tokenImages/dogecoin.webp",
+    endPoint:"Dogecoin",
+    name:"Dogecoin"
+  },
+  "Tether":{
+    image:"/tokenImages/tether.webp",
+    endPoint:"tether",
+    name:"Tether"
+  },
+  "Polkadot":{
+    image:"/tokenImages/polkadot.webp",
+    endPoint:"Polkadot",
+    name:"Polkadot"
+  },
+  "Solana":{
+    image:"/tokenImages/solana.webp",
+    endPoint:"Solana",
+    name:"Solana"
+  },
+  "Uniswap":{
+    image:"/tokenImages/uniswap.webp",
+    endPoint:"Uniswap",
+    name:"Uniswap"
+  },
+  // "Chainlink":{
+  //   image:"/tokenImages/chainlink.webp",
+  //   endPoint:"Chainlink"
+  // },
+  "Binance":{
+    image:"/tokenImages/bnb.webp",
+    endPoint:"binancecoin",
+    name:"Binance"
+  },
+  // "Kraken":{
+  //   image:"/tokenImages/kraken.webp",
+  //   endPoint:"Kraken"
+  // },
+  // "Bitfinex":{
+  //   image:"/tokenImages/bitfinex.webp",
+  //   endPoint:"Bitfinex"
+  // },
+  // "Bitstamp":{
+  //   image:"/tokenImages/bitstamp.webp",
+  //   endPoint:"Bitstamp"
+  // },
+  // "Gemini":{
+  //   image:"/tokenImages/gemini.webp",
+  //   endPoint:"Gemini"
+  // },
+}
+
+export type SearchDatabase = typeof searchDatabase;

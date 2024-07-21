@@ -15,10 +15,13 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const getHistoryData = cache(
-  async (id: string, vs_currency: string, days: number) => {
+  async (id: string, vs_currency: string, days: number,requested:string) => {
     const res = await axios.get(
       `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=${vs_currency}&days=${days}&precision=0`
     );
+    if(requested === "prices")
+    return res.data.prices;
+    else if(requested === "market_caps")
     return res.data.market_caps;
   }
 );
