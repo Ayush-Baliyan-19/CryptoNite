@@ -46,7 +46,7 @@ export const Linechart = (props: LineChartProps) => {
   return (
     <Card>
       <CardHeader>
-        {/* <CardTitle>Chart</CardTitle> */}
+        <CardTitle>Price Data for past 10 Hours</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>

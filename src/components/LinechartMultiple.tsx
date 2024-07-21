@@ -103,7 +103,7 @@ export const Linechart = (props: any) => {
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
+              // tickFormatter={(value) => value.slice(0, 3)}
             />
             <YAxis domain={selectedToken==="Bitcoin"?domain["Bitcoin"]:domain["Ethereum"]} tickFormatter={tick => {
               return formatter.format(tick)

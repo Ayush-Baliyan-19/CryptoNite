@@ -2,7 +2,7 @@
 import { Linechart } from "@/components/LinechartMultiple";
 import { TableCrypto } from "@/components/Table-Crypto";
 import { ChartConfig } from "@/components/ui/chart";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { getHistoryData, getAllTokenData, handleTableData, filterAndGroupByHour } from "../lib/utils";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { alltokenDataInterface, setAllTokenData } from "@/store/data-slice";
@@ -29,6 +29,7 @@ export default function Home() {
       color: "rgb(209,213,219)",
     },
   } satisfies ChartConfig;
+  const [selectedTable, setSelectedTable] = useState("All Tokens");
   useEffect(() => {
     if (currentPage === 1 && dataForTable.length === 0 && tokenData.allTokenData.length === 0) {
       getAllTokenData("usd", "market_cap_desc", 20, currentPage,toast).then((res) => {
@@ -84,6 +85,29 @@ export default function Home() {
     })
     fetchData();
   }, []);
+  useEffect(() => {
+    if (selectedTable === "All Tokens") {
+      setDataForTable(tokenData.allTokenData.slice((currentPage-1)*20, currentPage*20));
+    } else if(selectedTable === "Watchlist"){
+      setDataForTable([]);
+      tokenData.allTokenData.forEach((dataPoint) => {
+        if (appMgmt.watchListTokens.includes(dataPoint.id)) {
+          setDataForTable((prev) => [...prev, dataPoint]);
+        }
+      });
+    } else if(selectedTable === "Top Gainers"){
+      setDataForTable([]);
+      const topGainers = [...tokenData.allTokenData].sort((a,b) => b.price_change_percentage_24h - a.price_change_percentage_24h);
+      console.log(topGainers);
+      setDataForTable(topGainers);
+    } else if(selectedTable === "Top Losers"){
+      setDataForTable([]);
+      const topLosers = [...tokenData.allTokenData].sort((a,b) => a.price_change_percentage_24h - b.price_change_percentage_24h);
+      console.log(topLosers);
+      setDataForTable(topLosers);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[selectedTable]);
   return (
     <main className="flex gap-2">
       <div className="container leftContainer py-5 flex flex-col gap-5">
@@ -97,6 +121,8 @@ export default function Home() {
             data={dataForTable || []}
             {...{
               setDataForTable,
+              setSelectedTable,
+              selectedTable,
             }}
           />
         </div>

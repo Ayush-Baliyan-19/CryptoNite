@@ -36,11 +36,13 @@ import { useToast } from "./ui/use-toast";
 interface TableCryptoProps extends PropsWithChildren {
   data: Array<alltokenDataInterface>;
   setDataForTable: (data: alltokenDataInterface[]) => any;
+  selectedTable?: string;
+  setSelectedTable?: (table: string) => any;
 }
 
 export function TableCrypto(props: TableCryptoProps) {
   const {toast} = useToast()
-  const { data, setDataForTable } = props;
+  const { data, setDataForTable,selectedTable,setSelectedTable } = props;
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -49,7 +51,8 @@ export function TableCrypto(props: TableCryptoProps) {
   const { currentPage } = appMgmt;
   return (
     <Card>
-      <CardHeader className="flex flex-row justify-between">
+      <CardHeader className=" flex flex-col gap-4">
+        <div className="flex flex-row justify-between">
         <div className="flex flex-col gap-2">
           <CardTitle>Trending Market</CardTitle>
           <CardDescription>July 2024</CardDescription>
@@ -63,6 +66,29 @@ export function TableCrypto(props: TableCryptoProps) {
             className="text-blue-500"
           >
             View More Coins
+          </Button>
+        </div>
+        </div>
+        <div className="flex gap-5 justify-center items-center">
+          <Button variant={selectedTable==="All Tokens" ? "outline" :"ghost"} className={`px-2 py-1 rounded-xl h-auto ${selectedTable==="All Tokens" && " outline outline-green-400 text-green-400"}`} onClick={(e)=>{
+            setSelectedTable && setSelectedTable("All Tokens");
+          }}>
+            All Coins
+          </Button>
+          <Button variant={selectedTable==="Watchlist"?"outline":"ghost"} className={`px-2 py-1 rounded-xl h-auto ${selectedTable==="Watchlist" && "outline outline-green-400 text-green-400"}`} onClick={(e)=>{
+            setSelectedTable && setSelectedTable("Watchlist");
+          }}>
+            Watchlist
+          </Button>
+          <Button variant={selectedTable==="Top Gainers"?"outline":"ghost"} className={`px-2 py-1 rounded-xl h-auto ${selectedTable==="Top Gainers" && "outline outline-green-400 text-green-400"}`} onClick={(e)=>{
+            setSelectedTable && setSelectedTable("Top Gainers");
+          }}>
+            Top Gainers
+          </Button>
+          <Button variant={selectedTable==="Top Losers"?"outline":"ghost"} className={`px-2 py-1 rounded-xl h-auto ${selectedTable==="Top Losers" && "outline outline-green-400 text-green-400"}`} onClick={(e)=>{
+            setSelectedTable && setSelectedTable("Top Losers");
+          }}>
+            Top Losers
           </Button>
         </div>
       </CardHeader>

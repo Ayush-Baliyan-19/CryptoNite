@@ -14,6 +14,30 @@ const Page = () => {
   const appMgmt = useAppSelector((state) => state.appMgmt);
   const tokenData = useAppSelector((state) => state.data);
   const { currentPage } = appMgmt;
+  const [selectedTable, setSelectedTable] = useState("All Tokens");
+  useEffect(() => {
+    if (selectedTable === "All Tokens") {
+      setDataForTable(tokenData.allTokenData.slice((currentPage-1)*20, currentPage*20));
+    } else if(selectedTable === "Watchlist"){
+      setDataForTable([]);
+      tokenData.allTokenData.forEach((dataPoint) => {
+        if (appMgmt.watchListTokens.includes(dataPoint.id)) {
+          setDataForTable((prev) => [...prev, dataPoint]);
+        }
+      });
+    } else if(selectedTable === "Top Gainers"){
+      setDataForTable([]);
+      const topGainers = [...tokenData.allTokenData].sort((a,b) => b.price_change_percentage_24h - a.price_change_percentage_24h);
+      console.log(topGainers);
+      setDataForTable(topGainers);
+    } else if(selectedTable === "Top Losers"){
+      setDataForTable([]);
+      const topLosers = [...tokenData.allTokenData].sort((a,b) => a.price_change_percentage_24h - b.price_change_percentage_24h);
+      console.log(topLosers);
+      setDataForTable(topLosers);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[selectedTable]);
   useEffect(() => {
     if (
       currentPage === 1 &&
@@ -44,7 +68,7 @@ const Page = () => {
     <main className="flex gap-2">
       <div className="container leftContainer py-5 flex flex-col gap-5 w-2/3 pr-0 pl-3">
         <div className="chart h-3/5">
-          <TableCrypto data={dataForTable} setDataForTable={setDataForTable} />
+          <TableCrypto data={dataForTable} setDataForTable={setDataForTable} {...{selectedTable,setSelectedTable}} />
         </div>
       </div>
       <div className="container rightContainer py-5 flex flex-col gap-5 w-1/3 pl-0 pr-3">
