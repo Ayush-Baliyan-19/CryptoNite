@@ -19,7 +19,7 @@ export const getHistoryData = cache(
     const res = await axios.get(
       `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=${vs_currency}&days=${days}&precision=0`
     );
-    return res.data.prices;
+    return res.data.market_caps;
   }
 );
 

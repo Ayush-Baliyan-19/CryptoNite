@@ -20,11 +20,11 @@ export default function Home() {
   const chartConfig = {
     bitcoin: {
       label: "Bitcoin",
-      color: "#2563eb",
+      color: "rgb(249,115,22)",
     },
     ethereum: {
       label: "Ethereum",
-      color: "#2563eb",
+      color: "rgb(209,213,219)",
     },
   } satisfies ChartConfig;
   useEffect(() => {
