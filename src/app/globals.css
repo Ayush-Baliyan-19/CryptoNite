@@ -66,3 +66,22 @@
     @apply bg-background text-foreground;
   }
 }
+
+@media (max-width: 1024px) {
+  main {
+    flex-direction: column;
+  }
+  .leftContainer {
+    width: 100%;
+    padding-right: 2rem /* 32px */;
+    padding-left: 2rem /* 32px */;
+  }
+  .rightContainer {
+    width: 100%;
+    padding-right: 2rem /* 32px */;
+    padding-left: 2rem /* 32px */;
+  }
+  #tokenPageMain{
+    gap:2.5rem;
+  }
+}

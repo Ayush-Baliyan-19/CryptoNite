@@ -119,8 +119,8 @@ const Page = ({ params }: { params: { tokenName: string } }) => {
   }, []);
 
   return (
-    <main className="flex py-5">
-      <div className="container flex flex-col w-2/3 gap-3">
+    <main className="flex py-5" id="tokenPageMain">
+      <div className="container leftContainer flex flex-col w-2/3 gap-3">
           <Image src={tokenInfo.image} alt={tokenName[0]} width={30} height={30} />
         <div className="flex justify-between items-end w-full">
           <div className="value">

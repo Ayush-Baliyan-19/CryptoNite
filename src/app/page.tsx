@@ -9,7 +9,6 @@ import { alltokenDataInterface, setAllTokenData } from "@/store/data-slice";
 import { TableWatchList } from "@/components/Table-WatchList";
 import { TableViewedRecently } from "@/components/Table-Recently";
 import { cache } from "react";
-
 export default function Home() {
   const [dataForTable, setDataForTable] = useState<alltokenDataInterface[]>([]);
   // const [currentPage, setCurrentPage] = useState(1);
@@ -83,7 +82,7 @@ export default function Home() {
 
   return (
     <main className="flex gap-2">
-      <div className="container leftContainer py-5 flex flex-col gap-5 w-2/3 pr-0 pl-3">
+      <div className="container leftContainer py-5 flex flex-col gap-5">
         <div className="chart h-3/5">
           {dataChart.length > 0 && (
             <Linechart {...{ chartConfig, dataChart }} chartData={dataChart} />
@@ -100,7 +99,7 @@ export default function Home() {
       </div>
       <div className="container rightContainer py-5 flex flex-col gap-5 w-1/3 pl-0 pr-3">
         <div className="exploreTable">
-          <TableWatchList />
+          <TableWatchList className="lg:w-full"/>
         </div>
         <div className="exploreTable">
           <TableViewedRecently />
