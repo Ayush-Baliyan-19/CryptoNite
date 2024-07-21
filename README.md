@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Cryptonite: Cryptocurrency Tracker Web Application
+
+## Overview
+Cryptonite is a web application designed to track various cryptocurrencies. Built using Next.js and integrated with the CoinGecko API, it provides real-time updates, detailed information, and historical data on individual cryptocurrencies. 
+
+Check out the live demo: [Cryptonite](https://crypto-nite-five.vercel.app/)
+
+## Features
+
+### Homepage
+- **Global Market Cap Chart**: Displays a line/candle graph showing the global market cap data for cryptocurrencies using ShadCN for charts.
+- **Public Companies Holdings**: Information about public companies holding Bitcoin and Ethereum.
+
+### Explore Page
+- **Paginated Coin List/Grid**: Shows a paginated list or grid of cryptocurrencies with 20 items per page. Navigation allows users to load more items.
+- **Navigation**: Clicking on a cryptocurrency card routes the user to the product page of the selected cryptocurrency.
+
+### Product Page
+- **Basic Information**: Displays basic details about the selected cryptocurrency.
+- **Price Chart**: Shows a candle/line graph of the cryptocurrency’s price over time.
+
+### Common Header
+- **Application Name**: Displays the application name.
+- **Search Bar**: Includes a search bar that shows suggested cryptocurrencies as the user types.
+- **Draggable Watchlist**: Allows users to add coins to their watchlist by dragging and dropping them.
+
+## Technologies Used
+
+- **Frontend Framework**: Next.js
+- **Styling**: CSS, Tailwind CSS, Styled-Components
+- **State Management**: Redux/Redux Toolkit
+- **Charts**: ShadCN
+- **API Integration**: CoinGecko API
+- **Deployment**: Vercel
+
+## API Integration
+
+### CoinGecko API
+The application uses the CoinGecko API to fetch real-time and historical data on cryptocurrencies. The API key is managed to respect request limits and cache responses.
+
+### Caching
+All API responses are cached to improve performance and reduce the number of API requests.
+
+## Folder Structure
+
+The project follows a standard, well-defined folder structure:
+/pages
+
+/components
+/utils
+/public
+
+### Key Files
+- **utils.js**: Contains most of the utility functions and API request handlers.
+- **/components**: Contains reusable components like charts, cards, and navigation elements.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/cryptonite.git
+    ```
+2. Install dependencies:
+3. ```bash
+   npm install
+4. Start the development server:
+   ```bash
+    npm run dev
+5. Open the application in your browser:
+   ```bash
+   http://localhost:3000
+## Deployment
+The application is deployed on Vercel. You can deploy your own instance by connecting the repository to Vercel and following their deployment instructions.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Contact
+For support or feedback, please reach out via the issues section on GitHub.
