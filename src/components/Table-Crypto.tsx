@@ -31,6 +31,7 @@ import { alltokenDataInterface, setAllTokenData } from "@/store/data-slice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { handleTableData } from "@/lib/utils";
 import { setExploredPages, setWatchListTokens } from "@/store/app-mgmt-slice";
+import { useToast } from "./ui/use-toast";
 
 interface TableCryptoProps extends PropsWithChildren {
   data: Array<alltokenDataInterface>;
@@ -38,6 +39,7 @@ interface TableCryptoProps extends PropsWithChildren {
 }
 
 export function TableCrypto(props: TableCryptoProps) {
+  const {toast} = useToast()
   const { data, setDataForTable } = props;
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
   const router = useRouter();
@@ -134,7 +136,8 @@ export function TableCrypto(props: TableCryptoProps) {
                           dispatch,
                           setAllTokenData,
                           setExploredPages,
-                          currentPage - 1
+                          currentPage - 1,
+                          toast
                         );
                       }}
                     >
@@ -149,7 +152,8 @@ export function TableCrypto(props: TableCryptoProps) {
                           dispatch,
                           setAllTokenData,
                           setExploredPages,
-                          currentPage + 1
+                          currentPage + 1,
+                          toast
                         );
                       }}
                     >

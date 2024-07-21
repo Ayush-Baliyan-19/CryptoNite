@@ -9,7 +9,10 @@ import { alltokenDataInterface, setAllTokenData } from "@/store/data-slice";
 import { TableWatchList } from "@/components/Table-WatchList";
 import { TableViewedRecently } from "@/components/Table-Recently";
 import { cache } from "react";
+import { useToast } from "@/components/ui/use-toast";
+import { ToastProvider } from "@/components/ui/toast";
 export default function Home() {
+  const { toast } = useToast();
   const [dataForTable, setDataForTable] = useState<alltokenDataInterface[]>([]);
   // const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useAppDispatch();
@@ -28,10 +31,12 @@ export default function Home() {
   } satisfies ChartConfig;
   useEffect(() => {
     if (currentPage === 1 && dataForTable.length === 0 && tokenData.allTokenData.length === 0) {
-      getAllTokenData("usd", "market_cap_desc", 20, currentPage).then((res) => {
+      getAllTokenData("usd", "market_cap_desc", 20, currentPage,toast).then((res) => {
         dispatch(setAllTokenData(res));
         setDataForTable(res);
-      });
+      }).catch((error) => {
+        toast({title: "Error fetching data", description: "Please try again later",variant:"destructive"});
+      })
     }
     else{
       setDataForTable(tokenData.allTokenData.slice((currentPage-1)*20, currentPage*20));
@@ -43,8 +48,8 @@ export default function Home() {
     const fetchData =cache( async () => {
       try {
         const results = await Promise.all([
-          getHistoryData("bitcoin", "usd", 1,"market_caps"),
-          getHistoryData("ethereum", "usd", 1,"market_caps"),
+          getHistoryData("bitcoin", "usd", 1,"market_caps",toast),
+          getHistoryData("ethereum", "usd", 1,"market_caps",toast),
         ]);
         results.forEach((result, index) => {
           result.forEach((data: Array<number | Date>) => {
@@ -74,12 +79,11 @@ export default function Home() {
           });
         });
       } catch (error) {
-        console.error("Error fetching data", error);
+        toast({title: "Error fetching data", description: "Please try again later",variant:"destructive"});
       }
     })
     fetchData();
   }, []);
-
   return (
     <main className="flex gap-2">
       <div className="container leftContainer py-5 flex flex-col gap-5">

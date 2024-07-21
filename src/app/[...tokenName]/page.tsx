@@ -19,6 +19,7 @@ import {
 } from "@/store/app-mgmt-slice";
 import "./page.css";
 import Image from "next/image";
+import { useToast } from "@/components/ui/use-toast";
 
 interface tokenInfo {
   name: string;
@@ -37,6 +38,7 @@ interface tokenInfo {
   image: string;
 }
 const Page = ({ params }: { params: { tokenName: string } }) => {
+  const {toast} = useToast();
   const { tokenName } = params;
   const dispatch = useAppDispatch();
   const [tokenInfo, setTokenInfo] = useState<tokenInfo>({
@@ -56,7 +58,8 @@ const Page = ({ params }: { params: { tokenName: string } }) => {
     image: "",
   });
   useEffect(() => {
-    getInfoAboutToken(tokenName[0].toLowerCase()).then((res) => {
+    getInfoAboutToken(tokenName[0].toLowerCase(),toast).then((res:any) => {
+      if(res)
       setTokenInfo((prevState) => {
         return {
           ...prevState,
@@ -78,6 +81,8 @@ const Page = ({ params }: { params: { tokenName: string } }) => {
           image: res.data.image.small,
         };
       });
+    }).catch((error) => {
+      toast({title: "Error fetching data", description: "Please try again later",variant:"destructive"});
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -94,7 +99,7 @@ const Page = ({ params }: { params: { tokenName: string } }) => {
     const fetchData = async () => {
       try {
         const results = await Promise.all([
-          getHistoryData(tokenName[0].toLowerCase(), "usd", 1, "prices"),
+          getHistoryData(tokenName[0].toLowerCase(), "usd", 1, "prices",toast),
         ]);
         results.forEach((result, index) => {
           result.forEach((data: Array<number | Date>) => {
@@ -111,7 +116,7 @@ const Page = ({ params }: { params: { tokenName: string } }) => {
           setChartData((prev) => [...prev, data]);
         });
       } catch (error) {
-        console.log(error);
+        toast({title: "Error fetching data", description: "Please try again later"})
       }
     };
     fetchData();

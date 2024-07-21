@@ -6,22 +6,37 @@ import { getAllTokenData } from "@/lib/utils";
 import { alltokenDataInterface, setAllTokenData } from "@/store/data-slice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import React, { useEffect, useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
 const Page = () => {
+  const { toast } = useToast();
   const [dataForTable, setDataForTable] = useState<alltokenDataInterface[]>([]);
   const dispatch = useAppDispatch();
   const appMgmt = useAppSelector((state) => state.appMgmt);
   const tokenData = useAppSelector((state) => state.data);
   const { currentPage } = appMgmt;
   useEffect(() => {
-    if(currentPage === 1 && dataForTable.length === 0 && tokenData.allTokenData.length === 0){
+    if (
+      currentPage === 1 &&
+      dataForTable.length === 0 &&
+      tokenData.allTokenData.length === 0
+    ) {
       // fetch data
-      getAllTokenData("usd", "market_cap_desc", 20, currentPage).then((res) => {
-        dispatch(setAllTokenData(res));
-        setDataForTable(res);
-      });
-    }
-    else{
-      setDataForTable(tokenData.allTokenData.slice((currentPage-1)*20, currentPage*20));
+      getAllTokenData("usd", "market_cap_desc", 20, currentPage, toast)
+        .then((res) => {
+          dispatch(setAllTokenData(res));
+          setDataForTable(res);
+        })
+        .catch((error) => {
+          toast({
+            title: "Error fetching data",
+            description: "Please try again later",
+            variant: "destructive",
+          });
+        });
+    } else {
+      setDataForTable(
+        tokenData.allTokenData.slice((currentPage - 1) * 20, currentPage * 20)
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

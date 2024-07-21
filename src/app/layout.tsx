@@ -6,6 +6,7 @@ import { siteConfig } from "@/lib/constant";
 import { Navbar } from "@/components/Navbar";
 import { cn } from "@/lib/utils";
 import { StoreProvider } from "@/store/StoreProvider";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,6 +34,7 @@ export default function RootLayout({
         >
           <ThemeProvider attribute="class">
             <Navbar themeToggle />
+            <Toaster />
             {children}
           </ThemeProvider>
         </body>
